@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+
 
 class RegisterController extends Controller
 {
@@ -28,7 +31,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/top';
 
     /**
      * Create a new controller instance.
@@ -61,12 +64,41 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(array $data)
+
+    // 新規登録フォーム表示
+    public function showRegistrationForm()
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        return view('auth.register');
+    }
+    // 確認画面に進む処理
+    public function confirmRegistration(Request $request)
+    {
+        // 入力データをセッションに保存
+        $request->session()->put('register_data', $request->all());
+
+        // アバター画像をセッションに保存
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');  // publicディスクに保存
+            $request->session()->put('avatar', $path);
+        }
+
+        return view('auth.register-confirm');
+    }
+
+    // 登録処理（実際にデータベースに保存）
+    public function storeRegistration(Request $request)
+    {
+        $data = $request->session()->get('register_data');
+        $data['password'] = Hash::make($data['password']);  // パスワードのハッシュ化
+        $data['avatar'] = $request->session()->get('avatar');  // アバター画像パス
+
+        // ユーザーをデータベースに保存
+        User::create($data);
+
+        // セッションをクリア
+        $request->session()->forget('register_data');
+        $request->session()->forget('avatar');
+
+        return redirect()->route('home');  // TOP画面に遷移
     }
 }

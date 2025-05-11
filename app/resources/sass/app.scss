@@ -1,5 +1,19 @@
 // Fonts
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+
+$primary: #f2a76a;
+$secondary: #C0EAC0;
+$light-bg: #FFF3E0;
+$light-gray: #E0E0E0;
+$danger: #E76F51;
+
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: $light-bg;
+}
+
 @import url('https://fonts.bunny.net/css?family=Nunito');
+
 
 // Variables
 @import 'variables';
