@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-8">
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header">{{ __('新規登録') }}</div>
 
@@ -11,11 +11,9 @@
                     <form method="POST" action="{{ route('register.confirm') }}" enctype="multipart/form-data">
                         @csrf
 
-                        <div id="avatar_preview" class="preview text-center pt-sm-5 mb-3">
-                           <div class="mb-3">
-                                <img src="{{ old('avatar') ? old('avatar') : (session('avatar') ? asset('storage/images/' . session('avatar')) : asset('storage/images/user_default.jpg')) }}" alt="アバター" width="100">
-                            </div>
-                            <input class="form-control @error('avatar') is-invalid @enderror" type="file" name="avatar" id="avatar">
+                        <div id="avatar_image"class="preview text-center pt-sm-3 mb-3">
+                            <img id="preview" src="{{ asset('storage/images/user_default.jpg') }}" alt="avatar" class="img-thumbnail mb-2" style="width: 100px; height: auto;">
+                            <input class="form-control mt-2 @error('avatar') is-invalid @enderror" type="file" name="avatar" onchange="previewImage(event)">
                         </div>
                         @error('avatar')
                            <span class="invalid-feedback" role="alert">
@@ -28,6 +26,19 @@
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ session('register_data.name') }}" required>
+                                @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="city" class="col-md-4 col-form-label text-md-end">{{ __('住所（市区町村まで）') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="city" type="text" class="form-control @error('name') is-invalid @enderror" name="city" value="{{ session('register_data.city') }}" required>
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -86,15 +97,13 @@
     </div>
 </div>
 <script>
-    // 画像が選択されたらプレビューを表示
-    document.getElementById('avatar').addEventListener('change', function(event) {
-        const reader = new FileReader();
-        reader.onload = function() {
-            const avatarPreview = document.getElementById('avatar_preview');
-            avatarPreview.innerHTML = `<img src="${reader.result}" id="avatar_img" alt="Avatar" width="100" height="100">`;
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    });
+function previewImage(event) {
+    const reader = new FileReader();
+    reader.onload = function () {
+        document.getElementById('preview').src = reader.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}
 </script>
 @endsection
 

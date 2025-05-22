@@ -4,20 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Request extends Model
 {
     protected $fillable = [
-        'title',
-        'amount',
-        'introduction',
-        'category_id',
         'user_id',
-        'image'
+        'post_id',
+        'request_detail',
+        'tell',
+        'email',
+        'deadline',
+        'status',
     ];
 
-    public function category()
+    public function post()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Post::class);
     }
 
     public function user()

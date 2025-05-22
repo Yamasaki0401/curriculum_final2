@@ -20,7 +20,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md bg-secondary shadow-sm fixed-top">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ route('top') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -28,33 +28,7 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                        <div class="navbar-nav">
-                            <a class="nav-link active" aria-current="page" href="#">ご近所さんについて</a>
-                            <a class="nav-link" href="#">投稿をみる</a>
-                            <a class="nav-link" href="#">検索する</a>
-                        </div>
-                    </div>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @auth
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">{{ Auth::user()->name }}さんのマイページ</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">ログアウト</a>
-                            </li>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                        @endauth
-                    </ul>
+                     @include('layouts.navbar')
                 </div>
             </div>
         </nav>
@@ -64,8 +38,10 @@
                     <aside class="py-4 col-md-2 col-12 border-end border-3 d-none d-md-block">
                         @include('layouts.sidebar')
                     </aside>
-                    <main class="col-md-10 col-12" style="margin-top: 80px;">
-                        @yield('content')
+                    <main class="col-md-10 col-12 px-4" style="margin-top: 80px;">
+                        <div class="container-fluid">
+                            @yield('content')
+                        </div>
                     </main>
                     <footer class="bg-light text-center py-3 border-top border-2">
                         <p>© 2025 あなたのご近所さん. All rights reserved.</p>

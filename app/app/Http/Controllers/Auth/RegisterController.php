@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 
 
 class RegisterController extends Controller
@@ -55,6 +56,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'avatar' => ['string', 'max:2048'],
+            'city' => ['required', 'string', 'max:100'],
         ]);
     }
 
@@ -73,14 +76,25 @@ class RegisterController extends Controller
     // 確認画面に進む処理
     public function confirmRegistration(Request $request)
     {
-        // 入力データをセッションに保存
-        $request->session()->put('register_data', $request->all());
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'avatar' => 'nullable|image|max:2048',
+            'city' => 'required | string | max:100',
+        ]);
 
         // アバター画像をセッションに保存
         if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->store('avatars', 'public');  // publicディスクに保存
-            $request->session()->put('avatar', $path);
+            $validated['avatar'] = Storage::url($path);
+        } else {
+            $validated['avatar'] = null;
         }
+
+
+        // 入力データをセッションに保存
+        Session::put('register_data', $validated);
 
         return view('auth.register-confirm');
     }
@@ -88,9 +102,8 @@ class RegisterController extends Controller
     // 登録処理（実際にデータベースに保存）
     public function storeRegistration(Request $request)
     {
-        $data = $request->session()->get('register_data');
+        $data = Session::get('register_data');
         $data['password'] = Hash::make($data['password']);  // パスワードのハッシュ化
-        $data['avatar'] = $request->session()->get('avatar');  // アバター画像パス
 
         // ユーザーをデータベースに保存
         User::create($data);
@@ -99,6 +112,6 @@ class RegisterController extends Controller
         $request->session()->forget('register_data');
         $request->session()->forget('avatar');
 
-        return redirect()->route('home');  // TOP画面に遷移
+        return redirect()->route('top');  // TOP画面に遷移
     }
 }
