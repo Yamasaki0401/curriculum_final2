@@ -2,7 +2,17 @@
 
 @section('content')
 <div class="container py-5">
-    <h2 class="text-center mb-4">新規投稿登録</h2>
+    <h2 class="text-center mb-4">新規お手伝い登録</h2>
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
     <form method="POST" action="{{ route('posts.confirm') }}" enctype="multipart/form-data">
         @csrf
@@ -27,11 +37,19 @@
                         <input type="text" name="title" class="form-control" value="{{ old('title') }}" required>
                     </div>
 
-                    <!-- 金額 -->
+                    <!-- 金額　-->
                     <div class="mb-3">
-                        <label class="form-label">金額</label>
-                        <input type="text" name="amount" class="form-control" value="{{ old('amount') }}" required>
-                    </div>
+                        <label class="form-label">費用の設定</label>
+                        <select name="amount" class="form-select" required>
+                            <option value="">選択してください</option>
+                            <option value="0" {{ old('amount') == "0" ? 'selected' : '' }}>不要</option>
+                            <option value="1" {{ old('amount') == "1" ? 'selected' : '' }}>要相談</option>
+                        </select>
+                        @error('amount')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div
+
 
                     <!-- 内容 -->
                     <div class="mb-3">
@@ -41,7 +59,7 @@
 
                     <!-- カテゴリ -->
                     <div class="mb-3">
-                        <label class="form-label">カテゴリ</label>
+                        <label class="form-label">お手伝いの種類</label>
                         <select name="category_id" class="form-select">
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>

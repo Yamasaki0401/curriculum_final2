@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
+use App\Models\Request as ModelsRequest;
 
 class HomeController extends Controller
 {
@@ -25,8 +26,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest()->take(4)->get();
+        $posts = Post::latest()->paginate(4);
+        $requests = ModelsRequest::latest()->paginate(4);;
 
-        return view('top', compact('posts'));
+        return view('top', compact('posts', 'requests'));
     }
 }

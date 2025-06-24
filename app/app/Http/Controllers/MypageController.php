@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
+use App\Models\Request as ModelsRequest;
 use App\Models\User;
 
 class MypageController extends Controller
@@ -12,9 +13,10 @@ class MypageController extends Controller
     public function index()
     {
         $user = Auth::guard('web')->user();
-        $posts = Post::where('user_id', $user->id)->latest()->get();
+        $posts = Post::where('user_id', $user->id)->latest()->paginate(4);
+        $requests =ModelsRequest::where('user_id', $user->id)->latest()->paginate(4);
 
-        return view('mypage', compact('user', 'posts'));
+        return view('mypage', compact('user', 'posts' , 'requests'));
     }
 
     public function edit()
@@ -23,8 +25,13 @@ class MypageController extends Controller
         return view('mypage.edit', compact('user'));
     }
 
+
+
+
     public function withdraw(Request $request)
     {
+
+
         $user = Auth::guard('web')->user();
 
         // 退会処理（論理削除など）

@@ -86,10 +86,8 @@ class RegisterController extends Controller
 
         // アバター画像をセッションに保存
         if ($request->hasFile('avatar')) {
-            $path = $request->file('avatar')->store('avatars', 'public');  // publicディスクに保存
-            $validated['avatar'] = Storage::url($path);
-        } else {
-            $validated['avatar'] = null;
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $validated['avatar'] = 'storage/' . $path; // 既存の 'user_default.jpg' を上書き
         }
 
 

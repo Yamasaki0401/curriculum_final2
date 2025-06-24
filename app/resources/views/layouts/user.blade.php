@@ -7,6 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
@@ -15,6 +16,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div id="app">
@@ -35,7 +37,7 @@
 
         <div class="container">
                 <div class="row">
-                    <aside class="py-4 col-md-2 col-12 border-end border-3 d-none d-md-block">
+                    <aside class="col-md-2 col-12 border-end border-3 d-none d-md-block py-4">
                         @include('layouts.sidebar')
                     </aside>
                     <main class="col-md-10 col-12 px-4" style="margin-top: 80px;">
@@ -45,7 +47,7 @@
                     </main>
                     <footer class="bg-light text-center py-3 border-top border-2">
                         <p>© 2025 あなたのご近所さん. All rights reserved.</p>
-                </footer>
+                    </footer>
                 </div>
         </div>
     </div>

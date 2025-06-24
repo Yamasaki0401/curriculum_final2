@@ -13,6 +13,7 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
     use SoftDeletes;
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that are mass assignable.
      *
@@ -52,5 +53,8 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
-
+    public function violationReports()
+    {
+        return $this->hasMany(ViolationReport::class);
+    }
 }

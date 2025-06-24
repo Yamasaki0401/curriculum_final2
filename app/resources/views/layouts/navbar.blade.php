@@ -1,16 +1,14 @@
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-                        @auth('web')
                         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                                 <div class="navbar-nav">
-                                    <a class="nav-link active" aria-current="page" href="#">ご近所さんについて</a>
-                                    <a class="nav-link" href="{{ route('posts.index')}}">投稿をみる</a>
-                                    <a class="nav-link" href="#">検索する</a>
+                                   <!--  <a class="nav-link active" aria-current="page" href="#">ご近所さんについて</a> -->
+                                    <a class="nav-link" href="{{ route('posts.index')}}">お手伝い一覧</a>
+                                     <a class="nav-link" href="{{ route('requests.index')}}">お願い一覧</a>
+                                    <a class="nav-link" href="{{ route('search') }}">検索する</a>
                                 </div>
                         </div>
-                        @endauth
-
                     </ul>
 
                     <!-- Right Side Of Navbar -->

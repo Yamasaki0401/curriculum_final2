@@ -24,4 +24,19 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getAmountLabelAttribute()
+    {
+        return $this->amount == 1 ? '要相談' : '不要';
+    }
+
+    public function violationReports()
+    {
+        return $this->hasMany(ViolationReport::class);
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
 }

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container py-5">
-    <h2 class="text-center mb-4">新規投稿登録</h2>
+    <h2 class="text-center mb-4">新規お手伝い登録</h2>
 
     <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
         @csrf
@@ -21,7 +21,7 @@
 
             <div class="card p-4 shadow-sm">
                 <h4><strong>{{ session('post_data.title') }}</strong> / {{ $categoryName }}</h4>
-                <p class="mb-1">金額：{{ session('post_data.amount') }}円～</p>
+                <p>{{ session('post_data.amount') == 1 ? '要相談' : '不要' }}</p>
                 <p>{{ session('post_data.introduction') }}</p>
             </div>
             <div class="d-flex justify-content-between mt-3">
